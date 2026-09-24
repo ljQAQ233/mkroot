@@ -1,0 +1,15 @@
+if HELLO
+
+menu "hello"
+
+config HELLO_STRING
+    string "String to print"
+    default "Hello world"
+
+config HELLO_INTEGER
+    int "Integer to print"
+    default 42
+
+endmenu
+
+endif

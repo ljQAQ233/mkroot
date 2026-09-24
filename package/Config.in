@@ -1,0 +1,10 @@
+menu "Packages"
+
+config HELLO
+    bool "hello"
+    help
+        a program printing out `Hello world`
+
+source "package/hello/Config.in"
+
+endmenu

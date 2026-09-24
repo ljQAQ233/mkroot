@@ -1,0 +1,13 @@
+
+#
+# Packages
+#
+CONFIG_HELLO=y
+
+#
+# hello
+#
+CONFIG_HELLO_STRING="Hello world"
+CONFIG_HELLO_INTEGER=42
+# end of hello
+# end of Packages
