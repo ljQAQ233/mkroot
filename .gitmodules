@@ -1,0 +1,4 @@
+[submodule "toolchain/newlib"]
+	path = toolchain/newlib
+	url = https://github.com/ljQAQ233/newlib
+    shallow = true
