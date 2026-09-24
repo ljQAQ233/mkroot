@@ -34,8 +34,8 @@
           binutils
           gdb
           perl
-          # for check-macros.py
           python3Packages.python
+          python3Packages.kconfiglib
           self.packages.${system}.textos-toolchain
           self.packages.${system}.newlib-automake
           self.packages.${system}.newlib-autoconf

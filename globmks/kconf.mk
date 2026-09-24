@@ -1,0 +1,7 @@
+KCONFIG := $(TOPDIR)/Config.in
+KCONFIG_CONFIG := $(TOPDIR)/.config
+KCONFIG_AUTOHEADER := $(OUTPUT)/autoconf.h
+
+export KCONFIG
+export KCONFIG_CONFIG
+export KCONFIG_AUTOHEADER

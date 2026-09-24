@@ -1,0 +1,3 @@
+mainmenu "Buildroot-style Demo"
+
+source "package/Config.in"
