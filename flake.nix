@@ -40,6 +40,8 @@
           self.packages.${system}.newlib-automake
           self.packages.${system}.newlib-autoconf
         ];
+        CONFIG_TOOLCHAIN_EXTERNAL_BINUTILS = "${textosToolchain}/bin";
+        CONFIG_TOOLCHAIN_EXTERNAL_COMPILER = "${textosToolchain}/bin";
       };
     };
 }
