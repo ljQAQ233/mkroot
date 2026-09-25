@@ -10,6 +10,11 @@ config HELLO_INTEGER
     int "Integer to print"
     default 42
 
+config HELLO_NCURSES
+    bool "Enable ncurses demo"
+    default true
+    depends on NCURSES
+
 endmenu
 
 endif
