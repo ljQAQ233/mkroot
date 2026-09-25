@@ -24,4 +24,7 @@ toolchain-newlib: toolchain-cc
 	  $(CROSS_COMPILE)cc \
 	  > $(INST_DIR)/include/stddef.h
 
+toolchain-clean-newlib:
+	rm -rf $(BUILD)/toolchain/newlib
+
 .PHONY: toolchain-newlib

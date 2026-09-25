@@ -18,4 +18,7 @@ toolchain-cc:
 	chmod +x $(CROSS_COMPILE)cc 
 	ln -sf "$(CROSS_COMPILE)cc" "$(CROSS_COMPILE)gcc"
 
+toolchain-clean-cc:
+	rm -rf $(TOOLCHAIN_DIR)
+
 .PHONY: toolchain-cc

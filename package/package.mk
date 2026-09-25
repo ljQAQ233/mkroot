@@ -1,9 +1,12 @@
 # if CONFIG_X=y, X is enabled
-include $(KCONFIG_CONFIG)
+-include $(KCONFIG_CONFIG)
 
 PACKAGE_ALL := $(patsubst package/%,%,$(shell find package -mindepth 1 -maxdepth 1 -type d))
 PACKAGE_ENABLED := $(foreach pkg,$(PACKAGE_ALL),$(if $(filter y,$(CONFIG_$(call str_toupper,$(pkg)))),$(pkg),))
 PACKAGE_TARGETS := $(addprefix package-,$(PACKAGE_ENABLED))
+PACKAGE_TARGETS_CLEAN := $(addprefix package-clean-,$(PACKAGE_ENABLED))
+PACKAGE_TARGETS_STPCLEAN := $(addprefix package-stpclean-,$(PACKAGE_ENABLED))
+PACKAGE_TARGETS_DISTCLEAN := $(addprefix package-distclean-,$(PACKAGE_ENABLED))
 
 package: $(PACKAGE_TARGETS)
 
@@ -19,6 +22,29 @@ $(foreach t,$(PACKAGE_ENABLED), \
   $(eval package-$(t): ; $$(MAKE) -C package/$(t) \
 ))
 
+$(foreach t,$(PACKAGE_ENABLED), \
+  $(eval package-clean-$(t): ; $$(MAKE) -C package/$(t) clean \
+))
+
+$(foreach t,$(PACKAGE_ENABLED), \
+  $(eval package-stpclean-$(t): ; $$(MAKE) -C package/$(t) stpclean \
+))
+
+$(foreach t,$(PACKAGE_ENABLED), \
+  $(eval package-distclean-$(t): ; $$(MAKE) -C package/$(t) distclean \
+))
+
+package-clean: $(PACKAGE_TARGETS_CLEAN)
+package-stpclean: $(PACKAGE_TARGETS_STPCLEAN)
+package-distclean: $(PACKAGE_TARGETS_DISTCLEAN)
+
+.PHONY: package-clean
+
 .PHONY: package
 .PHONY: package-status
+.PHONY: package-clean
 .PHONY: $(PACKAGE_TARGETS)
+.PHONY: $(addprefix package-clean-,$(PACKAGE_ENABLED))
+.PHONY: $(PACKAGE_TARGETS_CLEAN)
+.PHONY: $(PACKAGE_TARGETS_STPCLEAN)
+.PHONY: $(PACKAGE_TARGETS_DISTCLEAN)

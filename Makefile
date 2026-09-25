@@ -31,4 +31,14 @@ include package/package.mk
 
 toolchain: toolchain-cc
 toolchain: toolchain-newlib
+toolchain-clean: toolchain-clean-cc toolchain-clean-newlib
+
+clean: package-clean toolchain-clean
+	rm -rf $(BUILD)
+
+stpclean: package-stpclean
+
+distclean: clean stpclean package-distclean
+	rm -f $(KCONFIG_CONFIG)
+	rm -rf $(OUTPUT)
 

@@ -26,4 +26,10 @@ $(BUILD)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+clean:
+	rm -rf $(BUILD)
+
+stpclean: ;
+distclean: ;
+
 .PHONY: all install
