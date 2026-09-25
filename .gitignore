@@ -3,3 +3,7 @@
 /output/
 /.config
 /.config.old
+
+/package/*/.source
+/package/*/.configure
+/package/*/.prepare
