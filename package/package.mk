@@ -8,6 +8,9 @@ PACKAGE_TARGETS_CLEAN := $(addprefix package-clean-,$(PACKAGE_ENABLED))
 PACKAGE_TARGETS_STPCLEAN := $(addprefix package-stpclean-,$(PACKAGE_ENABLED))
 PACKAGE_TARGETS_DISTCLEAN := $(addprefix package-distclean-,$(PACKAGE_ENABLED))
 
+PACKAGE_TARGETS_DEPS := $(wildcard package/*/dep.mk)
+include $(PACKAGE_TARGETS_DEPS)
+
 package: $(PACKAGE_TARGETS)
 
 package-status:
