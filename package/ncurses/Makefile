@@ -33,3 +33,4 @@ all: .prepare .configure .build
 	$(TOPDIR)/scripts/prepare.sh ${version} $(url) $(sha256)
 	touch $@
 
+include ../../globmks/clean.mk
