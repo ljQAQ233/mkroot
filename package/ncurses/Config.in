@@ -1,0 +1,12 @@
+if NCURSES
+
+menu "ncurses"
+
+config NCURSES_DEBUG
+    bool "Enable debug"
+    default false
+    depends on NCURSES
+
+endmenu
+
+endif
