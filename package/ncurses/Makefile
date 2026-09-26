@@ -23,14 +23,14 @@ all: .prepare .configure .build
 .configure: flag_debug=$(if $($(CONFIG_NCURSES_DEBUG)),"--with-debug")
 .configure:
 	@mkdir -p $(BUILD)
-	cd $(BUILD) && \
+	cd $(BUILD) && unset TERMINFO && \
 	  CC=$(PKG_CC) $(extra_env) $(SRCDIR)/configure --prefix=$(TARGET) --host=x86_64-linux \
 	  --without-ada --without-cxx-binding --without-manpages --without-tests $(extra_flags) \
-	  --with-terminfo-dirs=$(TARGET)/etc/terminfo --with-default-terminfo-dir=$(TARGET)/etc/terminfo
+	  --with-terminfo-dirs=/etc/terminfo:/usr/shared/terminfo --with-default-terminfo-dir=/etc/terminfo
 	touch $@
 
 .prepare:
-	$(TOPDIR)/scripts/prepare.sh ${version} $(url) $(sha256)
+	$(TOPDIR)/scripts/prepare.sh $(version) $(url) $(sha256)
 	touch $@
 
 include ../../globmks/clean.mk
