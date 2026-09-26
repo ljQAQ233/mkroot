@@ -13,12 +13,16 @@ else
   extra_flags += --without-debug
 endif
 
-all: .prepare .configure .build
+all: .prepare .configure .build .staging
 
-.build:
+.staging: .build
+	cd $(BUILD) && make DESTDIR=$(STAGING) install
+	touch $@
+
+.build: .configure
 	@mkdir -p $(BUILD)
 	cd $(BUILD) && make -j$$(nproc)
-	cd $(BUILD) && make install
+	touch $@
 
 .configure: flag_debug=$(if $($(CONFIG_NCURSES_DEBUG)),"--with-debug")
 .configure:

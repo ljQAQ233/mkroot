@@ -1,6 +1,7 @@
 TOPDIR   := $(CURDIR)
 OUTPUT   := $(TOPDIR)/output
 BUILD    := $(OUTPUT)/build
+STAGING  := $(OUTPUT)/staging
 TARGET   := $(OUTPUT)/target
 
 ARCH := x86_64
@@ -9,6 +10,7 @@ export TOPDIR
 export OUTPUT
 export BUILD
 export TARGET
+export STAGING
 export ARCH
 
 menuconfig:
