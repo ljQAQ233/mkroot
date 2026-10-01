@@ -1,6 +1,3 @@
-# if CONFIG_X=y, X is enabled
--include $(KCONFIG_CONFIG)
-
 PACKAGE_ALL := $(patsubst package/%,%,$(shell find package -mindepth 1 -maxdepth 1 -type d))
 PACKAGE_ENABLED := $(foreach pkg,$(PACKAGE_ALL),$(if $(filter y,$(CONFIG_$(call str_toupper,$(pkg)))),$(pkg),))
 PACKAGE_TARGETS := $(addprefix package-,$(PACKAGE_ENABLED))

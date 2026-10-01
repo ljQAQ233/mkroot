@@ -24,6 +24,9 @@ include globmks/const.mk
 include globmks/kconf.mk
 include globmks/utils.mk
 
+# if CONFIG_X=y, X is enabled
+-include $(KCONFIG_CONFIG)
+
 include toolchain/$(ARCH)-cc.mk
 include toolchain/$(ARCH)-newlib.mk
 
