@@ -1,3 +1,4 @@
 mainmenu "Buildroot-style Demo"
 
+source "osimage/Config.in"
 source "package/Config.in"

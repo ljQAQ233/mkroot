@@ -6,6 +6,9 @@ TARGET   := $(OUTPUT)/target
 
 ARCH := x86_64
 
+# GITHUB_PROXY := https://gh-proxy.com/
+GITHUB_URL := $(GITHUB_PROXY)https://github.com
+
 export TOPDIR
 export OUTPUT
 export BUILD
@@ -30,13 +33,15 @@ include globmks/utils.mk
 include toolchain/$(ARCH)-cc.mk
 include toolchain/$(ARCH)-newlib.mk
 
+toolchain: toolchain-cc
+toolchain: toolchain-newlib
+toolchain-clean: toolchain-clean-cc toolchain-clean-newlib
+
 package: genconfig
 
 include package/package.mk
 
-toolchain: toolchain-cc
-toolchain: toolchain-newlib
-toolchain-clean: toolchain-clean-cc toolchain-clean-newlib
+include osimage/osimage.mk
 
 clean: package-clean toolchain-clean
 	rm -rf $(BUILD)

@@ -8,3 +8,6 @@
 /package/*/.staging
 /package/*/.configure
 /package/*/.prepare
+
+/image.img
+/image.item
