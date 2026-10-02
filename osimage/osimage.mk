@@ -11,6 +11,9 @@ ifeq (${CONFIG_OSIMAGE_APPLY_BUNDLE},y)
 image.item: $(OUTPUT)/osimage/root
 endif
 
+$(SYSROOT): package-install
+image.item: $(SYSROOT)
+
 image.item:
 	echo -n > image.item
 	for d in $^; do \
@@ -42,7 +45,7 @@ mkimage: image.img
 	cd $(OUTPUT)/osimage; \
 	  cat $(abspath image.item) | while read -r file; do \
 	    case "$$file" in \
-		  root-made/*) p=$${file#root-made/} ;; \
+		  packs/*) p=$${file#packs/} ;; \
 		  root/*) p=$${file#root/} ;; \
 		esac; \
 		p=$(R)$${p}; \

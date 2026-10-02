@@ -15,6 +15,8 @@ endif
 
 all: .prepare .configure .build .staging
 
+install: ;
+
 .staging: .build
 	cd $(BUILD) && make DESTDIR=$(STAGING) install
 	touch $@

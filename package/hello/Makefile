@@ -5,16 +5,19 @@ LDFLAGS = -static
 LDLIBS  =
 BUILD  := $(BUILD)/hello
 
-CFLAGS  += -I$(TARGET)/include
+CFLAGS  += -I$(STAGING)/include
 
 all: $(BUILD)/hello
+
+install:
+	install -D -m 0755 $(BUILD)/hello $(SYSROOT)/bin/hello
 
 objs  = $(BUILD)/main.o
 objs += $(BUILD)/hello.o
 
 ifeq (${CONFIG_HELLO_NCURSES},y)
   objs += $(BUILD)/ncurses.o
-  LDFLAGS += -L$(TARGET)/lib
+  LDFLAGS += -L$(STAGING)/lib
   LDLIBS  += -lformw_g -lmenuw_g -lncursesw_g -lpanelw_g
 endif
 

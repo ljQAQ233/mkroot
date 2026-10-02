@@ -2,7 +2,7 @@ TOPDIR   := $(CURDIR)
 OUTPUT   := $(TOPDIR)/output
 BUILD    := $(OUTPUT)/build
 STAGING  := $(OUTPUT)/staging
-TARGET   := $(OUTPUT)/target
+SYSROOT  := $(OUTPUT)/osimage/packs
 
 ARCH := x86_64
 
@@ -12,7 +12,7 @@ GITHUB_URL := $(GITHUB_PROXY)https://github.com
 export TOPDIR
 export OUTPUT
 export BUILD
-export TARGET
+export SYSROOT
 export STAGING
 export ARCH
 
