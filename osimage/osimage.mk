@@ -34,9 +34,10 @@ image.img:
 	  sudo mkfs.minix -3 $${loop}p2; \
 	sudo losetup --detach $${loop}
 
-mkimage diskmu diskdrop: L:=$(shell sudo losetup -f)
-mkimage diskmu diskdrop: B:=$(OUTPUT)/osimage/.boot/
-mkimage diskmu diskdrop: R:=$(OUTPUT)/osimage/.root/
+diskdrop diskmu: attached_loops:=$(shell sudo losetup -j image.img | awk -F ':' '{print $$1}')
+mkimage diskdrop diskpick: L:=$(shell sudo losetup -f)
+mkimage diskdrop diskpick: B:=$(OUTPUT)/osimage/.boot/
+mkimage diskdrop diskpick: R:=$(OUTPUT)/osimage/.root/
 mkimage: image.img
 	sudo losetup --partscan $(L) image.img
 	mkdir -p $(B) $(R)
@@ -59,27 +60,26 @@ mkimage: image.img
 	sudo umount $(R) $(B)
 	sudo losetup --detach $(L)
 
-attached_loops:=$(shell sudo losetup -j image.img | awk -F ':' '{print $$1}')
-
 diskdrop:
 	-while sudo umount $(B); do true ; done
 	-while sudo umount $(R); do true ; done
 	-for i in $(attached_loops); do sudo losetup --detach $$i; done
 
-ifeq (${attached_loops},)
-
-diskmu:
+diskpick:
 	sudo losetup --partscan $(L) image.img
 	sudo mount $(L)p1 $(B)
 	sudo mount $(L)p2 $(R)
 
-else
-diskmu: diskdrop
-endif
+diskmu:
+	@if [[ "x$(attached_loops)" != "x" ]]; then \
+	  env -i PATH=$(PATH) make diskdrop; \
+	else \
+	  env -i PATH=$(PATH) make diskpick; \
+	fi
 
 preimage: image.item
 
-.PHONY: diskdrop diskmu preimage
+.PHONY: diskdrop diskpick diskmu preimage
 
 image-kernel: $(CONFIG_OSIMAGE_KERNEL_PATH)
 	sudo cp $< $(B)
