@@ -74,7 +74,31 @@ else
 diskmu: diskdrop
 endif
 
-
 preimage: image.item
 
-.PHONY: diskdrop diskmu
+.PHONY: diskdrop diskmu preimage
+
+image-kernel: $(CONFIG_OSIMAGE_KERNEL_PATH)
+	sudo cp $< $(B)
+
+image-efiboot: $(CONFIG_OSIMAGE_EFIBOOT_PATH)
+	@sudo mkdir -p $(B)/EFI/BOOT
+	sudo cp $< $(B)/EFI/BOOT/BOOTX64.EFI
+
+image-ldso: $(CONFIG_OSIMAGE_LDSO_PATH)
+	@sudo mkdir -p $(R)/lib
+	sudo cp $< $(R)/lib
+
+.PHONY: image-kernel image-efiboot image-ldso
+
+ifneq (${CONFIG_OSIMAGE_KERNEL_PATH},)
+install: image-kernel
+endif
+
+ifneq (${CONFIG_OSIMAGE_EFIBOOT_PATH},)
+install: image-efiboot
+endif
+
+ifneq (${CONFIG_OSIMAGE_LDSO_PATH},)
+install: image-ldso
+endif

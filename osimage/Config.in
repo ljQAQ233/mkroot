@@ -1,4 +1,4 @@
-menu "Image Configurations"
+menu "Image"
 
 config OSIMAGE_REMOTE_TAG
     string "Pre-compiled bundle's remote tag"
@@ -7,16 +7,16 @@ config OSIMAGE_REMOTE_TAG
         The tag of a release which contains root.tar.gz
 
 config OSIMAGE_KERNEL_PATH
-    string "Kernel path"
-    default "$(OUTPUT)/osimage/root/boot/kernel.elf"
+    string "Customize kernel path"
+    default ""
 
 config OSIMAGE_EFIBOOT_PATH
-    string "EFI bootloader path"
-    default "$(OUTPUT)/osimage/root/boot/EFI/BOOT/BOOTX64.EFI"
+    string "Customize EFI bootloader path"
+    default ""
 
 config OSIMAGE_LDSO_PATH
-    string "Dynamic linker (ldso) path"
-    default "$(OUTPUT)/osimage/root/lib/ld-textos.so"
+    string "Customize dynamic linker (ldso) path"
+    default ""
 
 config OSIMAGE_APPLY_BUNDLE
     bool "Apply apps and libs in bundle (root.tar.gz) to image"
