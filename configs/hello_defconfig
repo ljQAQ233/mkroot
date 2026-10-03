@@ -1,5 +1,15 @@
 
 #
+# Image
+#
+CONFIG_OSIMAGE_REMOTE_TAG="latest"
+CONFIG_OSIMAGE_KERNEL_PATH=""
+CONFIG_OSIMAGE_EFIBOOT_PATH=""
+CONFIG_OSIMAGE_LDSO_PATH=""
+# CONFIG_OSIMAGE_APPLY_BUNDLE is not set
+# end of Image
+
+#
 # Packages
 #
 CONFIG_HELLO=y
@@ -9,5 +19,14 @@ CONFIG_HELLO=y
 #
 CONFIG_HELLO_STRING="Hello world"
 CONFIG_HELLO_INTEGER=42
+CONFIG_HELLO_NCURSES=y
 # end of hello
+
+CONFIG_NCURSES=y
+
+#
+# ncurses
+#
+# CONFIG_NCURSES_DEBUG is not set
+# end of ncurses
 # end of Packages
