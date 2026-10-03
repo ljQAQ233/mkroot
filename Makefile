@@ -46,7 +46,7 @@ include package/package.mk
 
 include osimage/osimage.mk
 
-clean: package-clean toolchain-clean
+clean: package-clean toolchain-clean osimage-clean
 	rm -rf $(BUILD)
 
 stpclean: package-stpclean
@@ -55,3 +55,6 @@ distclean: clean stpclean package-distclean
 	rm -f $(KCONFIG_CONFIG)
 	rm -rf $(OUTPUT)
 
+.PHONY: clean
+.PHONY: stpclean
+.PHONY: distclean

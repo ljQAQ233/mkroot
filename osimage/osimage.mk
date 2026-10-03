@@ -105,3 +105,7 @@ endif
 ifneq (${CONFIG_OSIMAGE_LDSO_PATH},)
 install: image-ldso
 endif
+
+osimage-clean:
+	rm -f image.img
+	rm -f image.item
