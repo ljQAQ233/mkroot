@@ -6,6 +6,7 @@
 
 /package/*/.source
 /package/*/.staging
+/package/*/.build
 /package/*/.configure
 /package/*/.prepare
 
