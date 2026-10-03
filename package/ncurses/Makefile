@@ -30,7 +30,7 @@ install: ;
 .configure:
 	@mkdir -p $(BUILD)
 	cd $(BUILD) && unset TERMINFO && \
-	  CC=$(PKG_CC) $(extra_env) $(SRCDIR)/configure --prefix=$(TARGET) --host=x86_64-linux \
+	  CC=$(PKG_CC) $(extra_env) $(SRCDIR)/configure --prefix=/usr --host=x86_64-linux \
 	  --without-ada --without-cxx-binding --without-manpages --without-tests $(extra_flags) \
 	  --with-terminfo-dirs=/etc/terminfo:/usr/shared/terminfo --with-default-terminfo-dir=/etc/terminfo
 	touch $@
