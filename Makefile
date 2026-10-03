@@ -30,6 +30,9 @@ include globmks/utils.mk
 # if CONFIG_X=y, X is enabled
 -include $(KCONFIG_CONFIG)
 
+include toolchain/ovmf-prebuilt.mk
+include toolchain/qemu-net.mk
+include toolchain/$(ARCH)-qemu.mk
 include toolchain/$(ARCH)-cc.mk
 include toolchain/$(ARCH)-newlib.mk
 
