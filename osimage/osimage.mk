@@ -34,8 +34,8 @@ image.img:
 	  sudo mkfs.minix -3 $${loop}p2; \
 	sudo losetup --detach $${loop}
 
-diskdrop diskmu: attached_loops:=$(shell sudo losetup -j image.img | awk -F ':' '{print $$1}')
-mkimage diskdrop diskpick: L:=$(shell sudo losetup -f)
+diskdrop diskmu: attached_loops=$(shell sudo losetup -j image.img | awk -F ':' '{print $$1}')
+mkimage diskdrop diskpick: L=$(if $(_lazy_L),$(_lazy_L),$(eval _lazy_L:=$(shell sudo losetup -f))$(_lazy_L))
 mkimage diskdrop diskpick: B:=$(OUTPUT)/osimage/.boot/
 mkimage diskdrop diskpick: R:=$(OUTPUT)/osimage/.root/
 mkimage: image.img
