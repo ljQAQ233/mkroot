@@ -5,7 +5,7 @@ LDFLAGS = -static
 LDLIBS  =
 BUILD  := $(BUILD)/hello
 
-CFLAGS  += -I$(STAGING)/include
+CFLAGS += -I$(STAGING)/usr/include
 
 all: $(BUILD)/hello
 
@@ -17,8 +17,12 @@ objs += $(BUILD)/hello.o
 
 ifeq (${CONFIG_HELLO_NCURSES},y)
   objs += $(BUILD)/ncurses.o
-  LDFLAGS += -L$(STAGING)/lib
-  LDLIBS  += -lformw_g -lmenuw_g -lncursesw_g -lpanelw_g
+  LDFLAGS += -L$(STAGING)/usr/lib
+  ifeq (${CONFIG_NCURSES_DEBUG},y)
+    LDLIBS  += -lformw_g -lmenuw_g -lncursesw_g -lpanelw_g
+  else
+    LDLIBS  += -lformw -lmenuw -lncursesw -lpanelw
+  endif
 endif
 
 $(BUILD)/hello: $(objs)

@@ -1,5 +1,5 @@
 #include "hello.h"
-#include <ncursesw/ncurses.h>
+#include <ncurses.h>
 #include <string.h>
 #include <time.h>
 
