@@ -15,14 +15,12 @@ toolchain-newlib: toolchain-cc
 	  $(INST_DIR)/lib \
 	  /dev/null \
 	  > $(TOOLCHAIN_DIR)/cc.specs
-	cd toolchain/newlib && $(SHELL) \
-	  newlib/libc/sys/textos/stdarg.sh \
-	  $(CROSS_COMPILE)cc \
-	  > $(INST_DIR)/include/stdarg.h
-	cd toolchain/newlib && $(SHELL) \
-	  newlib/libc/sys/textos/stddef.sh \
-	  $(CROSS_COMPILE)cc \
-	  > $(INST_DIR)/include/stddef.h
+	cd toolchain/newlib; \
+	export cmdcc=$(CROSS_COMPILE)cc; \
+	for i in stddef.h stdbool.h stdarg.h float.h iso646.h; do \
+	  newlib/libc/sys/textos/stdcomp.sh $$i \
+	  > $(INST_DIR)/include/$$i; \
+	done
 
 toolchain-clean-newlib:
 	rm -rf $(BUILD)/toolchain/newlib
