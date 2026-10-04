@@ -2,16 +2,32 @@ $(OUTPUT)/osimage/root.tar.gz:
 	@mkdir -p $(@D)
 	curl -o $@ -L $(GITHUB_URL)/ljQAQ233/textos-dev/releases/$(CONFIG_OSIMAGE_REMOTE_TAG)/download/root.tar.gz
 
-$(OUTPUT)/osimage/root: $(OUTPUT)/osimage/root.tar.gz
+$(OUTPUT)/osimage/root/boot/kernel.elf: $(call kconf_get_str,$(CONFIG_OSIMAGE_KERNEL_PATH))
+	[[ -f "$<" ]] && install -D $< $@
+
+$(OUTPUT)/osimage/root/boot/EFI/BOOT/BOOTX64.EFI: $(call kconf_get_str,$(CONFIG_OSIMAGE_EFIBOOT_PATH))
+	[[ -f "$<" ]] && install -D $< $@
+
+$(OUTPUT)/osimage/root/lib/ld-textos.so: $(call kconf_get_str,$(CONFIG_OSIMAGE_LDSO_PATH))
+	[[ -f "$<" ]] && install -D $< $@
+
+$(OUTPUT)/osimage/root.extract: $(OUTPUT)/osimage/root.tar.gz
 	@mkdir -p $(@D)
-	tar xzvf $< -C $(abspath $@/..)
+	tar -xzvf $< -C $(abspath $@/..)
+	touch $@
+
+$(OUTPUT)/osimage/root: \
+	$(OUTPUT)/osimage/root.extract \
+	$(OUTPUT)/osimage/root/lib/ld-textos.so \
+	$(OUTPUT)/osimage/root/boot/kernel.elf \
+	$(OUTPUT)/osimage/root/boot/EFI/BOOT/BOOTX64.EFI
 	touch $@
 
 ifeq (${CONFIG_OSIMAGE_APPLY_BUNDLE},y)
 image.item: $(OUTPUT)/osimage/root
 endif
 
-$(SYSROOT): package-install
+$(SYSROOT): install
 image.item: $(SYSROOT)
 
 image.item:
@@ -23,6 +39,8 @@ image.item:
 	  find $$name -type f >> $(abspath image.item); \
 	  popd >/dev/null; \
 	done
+
+.PHONY: image.item
 
 image.img:
 	dd if=/dev/zero of=$@ bs=1M count=128
@@ -50,10 +68,13 @@ mkimage: image.img
 		  root/*) p=$${file#root/} ;; \
 		esac; \
 		p=$(R)$${p}; \
-		sudo mkdir -p $$(dirname $${p}); \
+		[[ -d $$(dirname $${p}) ]] || sudo mkdir -p $$(dirname $${p}); \
 	    sudo cp $$file $${p}; \
 	    echo "Copy $$file"; \
 	  done
+	sudo mkdir -p $(R)/home/{local,guest}
+	sudo chown -R 1000:1000 $(R)/home/local
+	sudo chown -R 1001:1001 $(R)/home/guest
 	sudo cp -r $(R)boot/* $(B)
 	sudo rm -rf $(R)boot/*
 	sudo sync
@@ -80,31 +101,6 @@ diskmu:
 preimage: image.item
 
 .PHONY: diskdrop diskpick diskmu preimage
-
-image-kernel: $(CONFIG_OSIMAGE_KERNEL_PATH)
-	sudo cp $< $(B)
-
-image-efiboot: $(CONFIG_OSIMAGE_EFIBOOT_PATH)
-	@sudo mkdir -p $(B)/EFI/BOOT
-	sudo cp $< $(B)/EFI/BOOT/BOOTX64.EFI
-
-image-ldso: $(CONFIG_OSIMAGE_LDSO_PATH)
-	@sudo mkdir -p $(R)/lib
-	sudo cp $< $(R)/lib
-
-.PHONY: image-kernel image-efiboot image-ldso
-
-ifneq (${CONFIG_OSIMAGE_KERNEL_PATH},)
-install: image-kernel
-endif
-
-ifneq (${CONFIG_OSIMAGE_EFIBOOT_PATH},)
-install: image-efiboot
-endif
-
-ifneq (${CONFIG_OSIMAGE_LDSO_PATH},)
-install: image-ldso
-endif
 
 osimage-clean:
 	rm -f image.img

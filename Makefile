@@ -46,6 +46,8 @@ include package/package.mk
 
 include osimage/osimage.mk
 
+install: package-install
+
 clean: package-clean toolchain-clean osimage-clean
 	rm -rf $(BUILD)
 
