@@ -6,7 +6,8 @@ QEMU_FLAGS := \
   -device isa-debug-exit \
   -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
   -device e1000,netdev=net0,mac=52:54:00:12:34:56 \
-  -drive file=image.img,if=ide,index=0,media=disk
+  -drive file=image.img,if=ide,index=0,media=disk \
+  $(QEMU_FLAGS_EXTRA)
 
 qemu-efi: toolchain-ovmf
 	qemu-system-x86_64 \
@@ -14,9 +15,10 @@ qemu-efi: toolchain-ovmf
 	  -drive if=pflash,format=raw,file=$(TOOLCHAIN_DIR)/OVMF_$(EFI_ARCH)_RELEASE/OVMF_VARS.fd \
 	  $(QEMU_FLAGS)
 
-qemu-emu:
+qemu-emu: kernel=$(OUTPUT)/osimage/root/boot/kernel.elf
+qemu-emu: $(kernel)
 	qemu-system-x86_64 \
-	  -kernel $(OUTPUT)/osimage/root/boot/kernel.elf \
+	  -kernel $(kernel) \
 	  $(QEMU_FLAGS)
 
 qemu-efi qemu-emu: qemu-net
